@@ -1,0 +1,88 @@
+#!/usr/bin/python3
+
+
+
+import cgi
+
+import cgitb
+
+
+
+# Enable CGI traceback for debugging
+
+cgitb.enable()
+
+
+
+# Print necessary headers
+
+print("Content-Type: text/html\n")
+
+
+
+# Function definitions for calculator operations
+
+def add(x, y):
+
+    return x + y
+
+
+
+def subtract(x, y):
+
+    return x - y
+
+
+
+def multiply(x, y):
+
+    return x * y
+
+
+
+def divide(x, y):
+
+    if y == 0:
+
+        return "Cannot divide by zero"
+
+    return x / y
+
+
+
+# Retrieve form data
+
+form = cgi.FieldStorage()
+
+operation = form.getvalue('operation')
+
+num1 = float(form.getvalue('num1'))
+
+num2 = float(form.getvalue('num2'))
+
+
+
+# Perform calculation based on operation
+
+if operation == "add":
+
+    result = add(num1, num2)
+
+elif operation == "subtract":
+
+    result = subtract(num1, num2)
+
+elif operation == "multiply":
+
+    result = multiply(num1, num2)
+
+elif operation == "divide":
+
+    result = divide(num1, num2)
+
+else:
+
+    result = "Invalid operation"
+
+
+
