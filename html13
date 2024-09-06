@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EC2 Management</title>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+
+
+        body {
+
+            font-family: 'Roboto', sans-serif;
+
+            background-color: grey;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+            margin: 0;
+
+            color: #ffffff;
+
+        }
+
+
+
+        .container {
+
+            background-color: rgb(23, 74, 103);
+
+            padding: 40px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+
+            width: 90%;
+
+            max-width: 500px;
+
+            text-align: center;
+
+        }
+
+
+
+        h1 {
+
+            font-size: 28px;
+
+            margin-bottom: 30px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+
+
+        h1::before {
+
+            content: '☁️';
+
+            margin-right: 10px;
+
+        }
+
+
+
+        .instance-id-group {
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        .instance-id-group label {
+
+            font-weight: bold;
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #e94560;
+
+        }
+
+
+
+        .instance-id-group input {
+
+            width: calc(100% - 20px);
+
+            padding: 10px;
+
+            font-size: 16px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            margin-top: 5px;
+
+            background-color: #484d54;
+
+            color: #ffffff;
+
+        }
+
+
+
+        .buttons {
+
+            display: flex;
+
+            justify-content: space-around;
+
+        }
+
+
+
+        .buttons button {
+
+            padding: 12px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            transition: transform 0.3s, background-color 0.3s;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            width: 30%;
+
+        }
+
+
+
+        .buttons button.launch {
+
+            background-color: #4CAF50;
+
+            color: white;
+
+        }
+
+
+
+        .buttons button.launch:hover {
+
+            background-color: #45a049;
+
+            transform: scale(1.05);
+
+        }
+
+
+
+        .buttons button.stop {
+
+            background-color: #f39c12;
+
+            color: white;
+
+        }
+
+
+
+        .buttons button.stop:hover {
+
+            background-color: #e67e22;
+
+            transform: scale(1.05);
+
+        }
+
+
+
+        .buttons button.terminate {
+
+            background-color: #e94560;
+
+            color: white;
+
+        }
+
+
+
+        .buttons button.terminate:hover {
+
+            background-color: #d43d53;
+
+            transform: scale(1.05);
+
+        }
+
+
+
+        .result {
+
+            white-space: pre-wrap;
+
+            background: #484d54;
+
+            padding: 10px;
+
+            border-radius: 5px;
+
+            text-align: left;
+
+            margin-top: 15px;
+
+            border: 1px solid #ddd;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>EC2 Management</h1>
+
+        <div class="instance-id-group">
+
+            <label for="instance_id">Instance ID:</label>
+
+            <input type="text" id="instance_id" name="instance_id" required>
+
+        </div>
+
+        <div class="buttons">
+
+            <button class="launch" onclick="manageInstance('launch')">🚀 Launch</button>
+
+            <button class="stop" onclick="manageInstance('stop')">🛑 Stop</button>
+
+            <button class="terminate" onclick="manageInstance('terminate')">💥 Terminate</button>
+
+        </div>
+
+        <div id="result" class="result"></div>
+
+    </div>
+
+
+
+    <script>
+
+        function manageInstance(action) {
+
+            const instanceId = document.getElementById('instance_id').value;
+
+            if (!instanceId) {
+
+                alert('Please enter an instance ID.');
+
+                return;
+
+            }
+
+
+
+            fetch(`/cgi-bin/manage_ec2.py?action=${action}&instance_id=${instanceId}`, {
+
+                method: 'GET'
+
+            })
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                const resultDiv = document.getElementById('result');
+
+                if (data.error) {
+
+                    resultDiv.textContent = `Error: ${data.error}`;
+
+                } else {
+
+                    resultDiv.textContent = `Success: ${data.message}`;
+
+                }
+
+            })
+
+            .catch(error => {
+
+                console.error('Error:', error);
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+
+
+
