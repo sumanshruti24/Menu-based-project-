@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Interactive Menu</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background-color: pink;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+            margin: 0;
+
+        }
+
+
+
+        .container {
+
+            text-align: center;
+
+            background-color: rgba(26, 113, 126, 0.782);
+
+            padding: 20px;
+
+            border-radius: 8px;
+
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        }
+
+
+
+        .menu {
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 20px;
+
+            background-color: grey;
+
+            padding: 20px;
+
+            border-radius: 8px;
+
+            box-shadow: 0 16px 24px rgba(0, 0, 0, 0.1);
+
+        }
+
+
+
+        .btn {
+
+            width: 170px;
+
+            padding: 10px 20px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background-color: #555;
+
+            color: rgb(255, 252, 252);
+
+            transition: background-color 0.3s;
+
+            border: 1px solid white;
+
+        }
+
+
+
+        .btn:hover {
+
+            background-color: #333;
+
+            border: 2px solid white;
+
+            color: white;
+
+            border-radius: 15px;
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+    <div class="container">
+
+        <h1>Interactive Menu</h1>
+
+        <div class="menu">
+
+            <button class="btn" onclick="goToPage('linux.html')">Linux</button><br>
+
+            <button class="btn" onclick="goToPage('docker.html')">Docker</button><br>
+
+            <button class="btn" onclick="goToPage('geo-coordinates.html')">Geo Coordinates</button><br>
+
+            <button class="btn" onclick="goToPage('googlesearch.html')">Google Search</button><br>
+
+            <button class="btn" onclick="goToPage('python1.html')">Python1</button><br>
+
+            <button class="btn" onclick="goToPage('aws.html')">AWS</button><br>
+
+	   
+
+	    <button class="btn" onclick="goToPage('chatbot.html')">Chatbot</button><br>
+
+
+
+	    
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        function goToPage(page) {
+
+            window.location.href = page;
+
+        }
+
+    </script>
+
+
+
+</body>
+
+
+
+</html>
+
