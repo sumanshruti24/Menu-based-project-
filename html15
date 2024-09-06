@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CloudWatch Log Viewer</title>
+
+    <style>
+
+        body {
+
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            margin: 0;
+
+            padding: 0;
+
+            background-color: grey;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+            flex-direction: column;
+
+        }
+
+
+
+        .container {
+
+            background-color: rgb(34, 112, 146);
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+            width: 80%;
+
+            max-width: 600px;
+
+            text-align: center;
+
+        }
+
+
+
+        .form-group {
+
+            margin-bottom: 15px;
+
+            text-align: left;
+
+        }
+
+
+
+        label {
+
+            font-weight: bold;
+
+            display: block;
+
+            margin-bottom: 5px;
+
+        }
+
+
+
+        input[type="text"], input[type="password"] {
+
+            width: calc(100% - 10px);
+
+            padding: 8px;
+
+            font-size: 16px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 5px;
+
+            margin-top: 5px;
+
+        }
+
+
+
+        button {
+
+            background-color: #4CAF50;
+
+            color: white;
+
+            padding: 12px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+        }
+
+
+
+        button:hover {
+
+            background-color: #45a049;
+
+        }
+
+
+
+        .result {
+
+            white-space: pre-wrap;
+
+            background: #f4f4f4;
+
+            padding: 10px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 5px;
+
+            text-align: left;
+
+            margin-top: 15px;
+
+        }
+
+
+
+        .emojis {
+
+            font-size: 24px;
+
+            margin-top: 10px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>CloudWatch Log Viewer 🌩️📜</h2>
+
+        <div class="form-group">
+
+            <label for="log_group_name">Log Group Name: 📂</label>
+
+            <input type="text" id="log_group_name" name="log_group_name" required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="log_stream_name">Log Stream Name: 📈</label>
+
+            <input type="text" id="log_stream_name" name="log_stream_name" required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="region_name">Region Name: 🌍</label>
+
+            <input type="text" id="region_name" name="region_name" required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="aws_access_key_id">AWS Access Key ID: 🔑</label>
+
+            <input type="text" id="aws_access_key_id" name="aws_access_key_id" required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="aws_secret_access_key">AWS Secret Access Key: 🕵️‍♂️</label>
+
+            <input type="password" id="aws_secret_access_key" name="aws_secret_access_key" required>
+
+        </div>
+
+        <button type="submit">Get Logs 📊</button>
+
+        <div id="result" class="result"></div>
+
+        <div class="emojis">
+
+            
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        document.querySelector('button[type="submit"]').addEventListener('click', function(e) {
+
+            e.preventDefault();
+
+            const form = document.getElementById('logForm');
+
+            const formData = new FormData(form);
+
+            const params = new URLSearchParams(formData);
+
+
+
+            fetch('/cgi-bin/logs.py?' + params.toString(), {
+
+                method: 'GET'
+
+            })
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                const resultDiv = document.getElementById('result');
+
+                if (data.error) {
+
+                    resultDiv.textContent = data.error;
+
+                } else {
+
+                    resultDiv.textContent = JSON.stringify(data, null, 2);
+
+                }
+
+            })
+
+            .catch(error => {
+
+                console.error('Error:', error);
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
+
