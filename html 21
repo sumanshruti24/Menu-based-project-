@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Voice-Controlled Robot</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            text-align: center;
+
+            background-color: #f0f0f0;
+
+            margin-top: 50px;
+
+        }
+
+        .robot {
+
+            font-size: 5rem;
+
+            margin: 20px;
+
+        }
+
+        button {
+
+            padding: 10px 20px;
+
+            font-size: 1rem;
+
+            margin: 10px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Voice-Controlled Robot 🤖</h1>
+
+    <div class="robot">🤖</div>
+
+    <button onclick="startListening()">Start Listening</button>
+
+    <form id="commandForm" action="/cgi-bin/robb.py" method="post">
+
+        <input type="hidden" name="voice_command" id="voiceCommand">
+
+    </form>
+
+
+
+    <script>
+
+        function startListening() {
+
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+            recognition.lang = 'en-US';
+
+            recognition.start();
+
+
+
+            recognition.onresult = function(event) {
+
+                const voiceCommand = event.results[0][0].transcript;
+
+                document.getElementById('voiceCommand').value = voiceCommand;
+
+                document.getElementById('commandForm').submit();
+
+            };
+
+
+
+            recognition.onerror = function(event) {
+
+                console.error('Error occurred in recognition: ' + event.error);
+
+            };
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+
+
+
