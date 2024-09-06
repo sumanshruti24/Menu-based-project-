@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Webpage</title>
+
+    <style>
+
+        body {
+
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            background-color: rgb(149, 40, 78);
+
+            color: #fff;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+            margin: 0;
+
+        }
+
+
+
+        .container {
+
+            background-color: black;
+
+            border-radius: 8px;
+
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+            padding: 30px;
+
+            text-align: center;
+
+            max-width: 600px;
+
+            width: 100%;
+
+        }
+
+
+
+        h2 {
+
+            margin-bottom: 20px;
+
+            color: #4CAF50;
+
+        }
+
+
+
+        input[type="text"] {
+
+            width: 70%;
+
+            padding: 10px;
+
+            font-size: 16px;
+
+            border: 1px solid #555;
+
+            border-radius: 5px;
+
+            box-sizing: border-box;
+
+            color: (128, 128, 128, 0);
+
+            background-color: #eee;
+
+            transition: border-color 0.3s ease;
+
+        }
+
+
+
+        input[type="text"]:focus {
+
+            outline: none;
+
+            border-color: #4CAF50;
+
+        }
+
+
+
+        .button {
+
+            padding: 10px 20px;
+
+            font-size: 16px;
+
+            background-color: #4CAF50;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            transition: background-color 0.3s;
+
+        }
+
+
+
+        .button:hover {
+
+            background-color: #45a049;
+
+        }
+
+
+
+        #d1 {
+
+            margin-top: 20px;
+
+            white-space: pre-wrap;
+
+            font-size: 14px;
+
+            text-align: left;
+
+        }
+
+
+
+        .emoji {
+
+            font-size: 1.2rem;
+
+            margin-left: 10px;
+
+            vertical-align: middle;
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+    <div class="container">
+
+        <h2>Linux Command Executor</h2>
+
+        <p>
+
+            Command:
+
+            <input id="input" required="True" type="text" placeholder="Enter your command" />
+
+            <button class="button" onclick="lw()">Execute <span class="emoji">🚀</span></button>
+
+        </p>
+
+        <pre id="d1"></pre>
+
+    </div>
+
+
+
+    <script>
+
+        function lw() {
+
+            var command = document.getElementById("input").value;
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("GET", "/cgi-bin/linux.py?cmd=" + encodeURIComponent(command), true);
+
+            xhr.onreadystatechange = function () {
+
+                if (xhr.readyState == 4 && xhr.status == 200) {
+
+                    document.getElementById("d1").innerText = xhr.responseText;
+
+                }
+
+            };
+
+            xhr.send();
+
+        }
+
+    </script>
+
+</body>
+
+
+
+</html>
+
+
+
