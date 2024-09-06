@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Google Search</title>
+
+    <link rel="icon" href="data:,">
+
+
+
+    <style>
+
+        body {
+
+            background-color: grey;
+
+            font-family: Arial, sans-serif;
+
+            margin: 0;
+
+            padding: 0;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+            flex-direction: column;
+
+        }
+
+
+
+        h2 {
+
+            font-size: 2rem;
+
+            margin-bottom: 1rem;
+
+            color: #1a202c;
+
+        }
+
+
+
+        input[type="text"],
+
+        button {
+
+            padding: 0.75rem 1rem;
+
+            font-size: 1rem;
+
+            border: 1px solid #cbd5e0;
+
+            border-radius: 0.25rem;
+
+            margin-bottom: 1rem;
+
+            width: 300px;
+
+            max-width: 100%;
+
+        }
+
+
+
+        button {
+
+            background-color: #4a90e2;
+
+            color: #ffffff;
+
+            cursor: pointer;
+
+            transition: background-color 0.3s ease;
+
+        }
+
+
+
+        button:hover {
+
+            background-color: #1e70bf;
+
+        }
+
+
+
+        #results {
+
+            margin-top: 2rem;
+
+        }
+
+
+
+        .result {
+
+            border: 1px solid #cbd5e0;
+
+            border-radius: 0.5rem;
+
+            padding: 1rem;
+
+            margin-bottom: 1rem;
+
+            background-color: #ffffff;
+
+        }
+
+
+
+        .result h3 {
+
+            font-size: 1.2rem;
+
+            margin-bottom: 0.5rem;
+
+            color: #1a202c;
+
+        }
+
+
+
+        .result p {
+
+            margin-bottom: 0.5rem;
+
+            color: #4a5568;
+
+        }
+
+
+
+        .result a {
+
+            color: #3182ce;
+
+            text-decoration: none;
+
+            transition: color 0.3s ease;
+
+        }
+
+
+
+        .result a:hover {
+
+            color: #2c5282;
+
+        }
+
+
+
+        /* Emojis */
+
+        .emoji {
+
+            font-size: 1.5rem;
+
+            margin-left: 0.5rem;
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+    <h2>Google Search <span class="emoji">🔍</span></h2>
+
+
+
+    <input type="text" id="searchQuery" placeholder="Enter your search query">
+
+
+
+    <button id="searchBtn">Search <span class="emoji">🚀</span></button>
+
+
+
+    <div id="results"></div>
+
+
+
+    <script>
+
+        document.getElementById("searchBtn").addEventListener("click", function () {
+
+            var query = document.getElementById("searchQuery").value.trim();
+
+            if (query !== "") {
+
+                fetch('/cgi-bin/googlesearch.py?query=' + encodeURIComponent(query))
+
+                    .then(response => response.json())
+
+                    .then(data => {
+
+                        displayResults(data);
+
+                    })
+
+                    .catch(error => console.error('Error:', error));
+
+            }
+
+        });
+
+
+
+        function displayResults(results) {
+
+            var resultsDiv = document.getElementById("results");
+
+            resultsDiv.innerHTML = "";
+
+            if (results) {
+
+                results.forEach(function (result, index) {
+
+                    var resultDiv = document.createElement("div");
+
+                    resultDiv.classList.add("result");
+
+                    resultDiv.innerHTML = `
+
+                        <h3>Result ${index + 1}:</h3>
+
+                        <p>Title: ${result.title}</p>
+
+                        <p>Link: <a href="${result.link}" target="_blank">${result.link}</a></p>
+
+                        <p>Snippet: ${result.snippet}</p>
+
+                    `;
+
+                    resultsDiv.appendChild(resultDiv);
+
+                });
+
+            } else {
+
+                resultsDiv.textContent = "Failed to retrieve search results.";
+
+            }
+
+        }
+
+    </script>
+
+
+
+</body>
+
+
+
+</html>
+
+
+
