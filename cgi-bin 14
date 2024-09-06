@@ -1,0 +1,94 @@
+#!/usr/bin/python3
+
+
+
+import cgi
+
+import cgitb
+
+from twilio.rest import Client
+
+
+
+cgitb.enable()  # Enable CGI traceback for debugging
+
+
+
+# Print necessary headers
+
+print("Content-Type: text/html\n")
+
+
+
+# Create instance of FieldStorage
+
+form = cgi.FieldStorage()
+
+
+
+# Get data from fields
+
+phone_number = form.getvalue('phone_number')
+
+message = form.getvalue('message')
+
+
+
+def send_whatsapp_message(phone_number, message):
+
+    # Twilio credentials (replace with your actual credentials)
+
+    account_sid = 'ACcde3a0c8114b2819e046cbe46b18a2bc'
+
+    auth_token = 'cb693f2a4cc540e51e5192f800dc7d4d'
+
+    twilio_whatsapp_number = 'whatsapp:+14155238886'  # Twilio's sandbox number
+
+
+
+    client = Client(account_sid, auth_token)
+
+
+
+    try:
+
+        # Sending the message
+
+        client.messages.create(
+
+            body=message,
+
+            from_=twilio_whatsapp_number,  # Corrected variable name
+
+            to=f'whatsapp:{phone_number}'  # Corrected formatting of phone number
+
+        )
+
+
+
+        return "Message sent successfully."
+
+
+
+    except Exception as e:
+
+        return f"An error occurred: {str(e)}"
+
+
+
+# Check if phone_number and message are provided in the form
+
+if phone_number and message:
+
+    result = send_whatsapp_message(phone_number, message)
+
+else:
+
+    result = "All form fields are required."
+
+
+
+# Print the result (you might want to format this better in your HTML output)
+
+print(result)
+
