@@ -1,0 +1,86 @@
+#!/usr/bin/python3
+
+
+
+import cgi
+
+import cgitb
+
+cgitb.enable()
+
+
+
+print("Content-type: text/html\n")
+
+
+
+# CGI form handling
+
+form = cgi.FieldStorage()
+
+voice_command = form.getvalue('voice_command', '')
+
+
+
+# Simulate the robot performing any action based on the command
+
+action_response = f"Performing action: {voice_command}... 🤖"
+
+
+
+# Output response to HTML
+
+print(f"""
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Robot Action Response</title>
+
+    <style>
+
+        body {{
+
+            font-family: Arial, sans-serif;
+
+            text-align: center;
+
+            background-color: #f0f0f0;
+
+        }}
+
+        .robot {{
+
+            font-size: 5rem;
+
+            margin: 20px;
+
+        }}
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Action Response</h1>
+
+    <div class="robot">🤖</div>
+
+    <p>{action_response}</p>
+
+    <a href="/">Go Back</a>
+
+</body>
+
+</html>
+
+""")
+
