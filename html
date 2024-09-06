@@ -1,7 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
+
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Interactive Menu</title>
@@ -10,7 +16,7 @@
 
         body {
 
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
             background-color: pink;
 
@@ -24,6 +30,8 @@
 
             margin: 0;
 
+            color: #ffffff;
+
         }
 
 
@@ -34,11 +42,25 @@
 
             background-color: rgba(26, 113, 126, 0.782);
 
-            padding: 20px;
+            padding: 40px;
 
-            border-radius: 8px;
+            border-radius: 12px;
 
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+
+            max-width: 600px;
+
+            width: 90%;
+
+        }
+
+
+
+        h1 {
+
+            font-size: 2em;
+
+            margin-bottom: 20px;
 
         }
 
@@ -46,25 +68,15 @@
 
         .menu {
 
-            display: flex;
+            display: grid;
 
-            flex-direction: column;
+            grid-template-columns: repeat(2, 1fr);
 
-            justify-content: center;
-
-            align-items: center;
-
-            gap: 10px;
-
-            margin-top: 20px;
+            gap: 20px;
 
             background-color: grey;
 
-            padding: 20px;
-
-            border-radius: 8px;
-
-            box-shadow: 0 16px 24px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
 
         }
 
@@ -72,25 +84,31 @@
 
         .btn {
 
-            width: 170px;
+            padding: 15px;
 
-            padding: 10px 20px;
-
-            font-size: 16px;
+            font-size: 18px;
 
             cursor: pointer;
 
             border: none;
 
-            border-radius: 15px;
+            border-radius: 12px;
 
             background-color: #555;
 
-            color: rgb(255, 252, 252);
+            color: #c7b52b;
 
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
 
-            border: 1px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
 
         }
 
@@ -98,13 +116,27 @@
 
         .btn:hover {
 
-            background-color: #333;
+            background-color: #21a1f1;
 
-            border: 2px solid white;
+            transform: translateY(-3px);
 
-            color: white;
+        }
 
-            border-radius: 15px;
+
+
+        .btn img {
+
+            width: 24px;
+
+            margin-right: 10px;
+
+        }
+
+
+
+        .btn span {
+
+            vertical-align: middle;
 
         }
 
@@ -118,29 +150,57 @@
 
     <div class="container">
 
-        <h1>Interactive Menu</h1>
+        <h1>🚀 Interactive Menu</h1>
 
         <div class="menu">
 
-            <button class="btn" onclick="goToPage('linux.html')">Linux</button><br>
+            <button class="btn" onclick="goToPage('linux1.html')">
 
-            <button class="btn" onclick="goToPage('docker.html')">Docker</button><br>
+                <span>🐧 Linux</span>
 
-            <button class="btn" onclick="goToPage('geo-coordinates.html')">Geo Coordinates</button><br>
+            </button>
 
-            <button class="btn" onclick="goToPage('googlesearch.html')">Google Search</button><br>
+            <button class="btn" onclick="goToPage('docker1.html')">
 
-            <button class="btn" onclick="goToPage('python1.html')">Python1</button><br>
+                <span>🐳 Docker</span>
 
-            <button class="btn" onclick="goToPage('aws.html')">AWS</button><br>
+            </button>
 
-	   
+            <button class="btn" onclick="goToPage('geo-coordinates1.html')">
 
-	    <button class="btn" onclick="goToPage('chatbot.html')">Chatbot</button><br>
+                <span>🌍 Geo Coordinates</span>
 
+            </button>
 
+            <button class="btn" onclick="goToPage('googlesearch1.html')">
 
-	    
+                <span>🔍 Google Search</span>
+
+            </button>
+
+            <button class="btn" onclick="goToPage('python1.html')">
+
+                <span>🐍 Python</span>
+
+            </button>
+
+            <button class="btn" onclick="goToPage('aws.html')">
+
+                <span>☁️ AWS</span>
+
+            </button>
+
+            <button class="btn" onclick="goToPage('chatbot.html')">
+
+                <span>🤖 Chatbot</span>
+
+            </button>
+
+            <button class="btn" onclick="goToPage('unique-project.html')">
+
+                <span>✨ Unique Project</span>
+
+            </button>
 
         </div>
 
@@ -158,11 +218,20 @@
 
     </script>
 
-
-
 </body>
 
 
 
 </html>
+
+
+
+
+
+           
+
+
+
+
+
 
