@@ -1,0 +1,182 @@
+#!/usr/bin/python3
+
+
+
+import cgi
+
+import cgitb
+
+import json
+
+import os
+
+import datetime
+
+import time
+
+
+
+cgitb.enable()
+
+
+
+# File to store alarm information
+
+ALARM_FILE = '/var/www/html/alarm.html'
+
+
+
+# Function to load alarm data
+
+def load_alarm():
+
+    if os.path.exists(ALARM_FILE):
+
+        with open(ALARM_FILE, 'r') as f:
+
+            return json.load(f)
+
+    return {'alarm_time': None, 'status': 'stopped'}
+
+
+
+# Function to save alarm data
+
+def save_alarm(alarm_data):
+
+    with open(ALARM_FILE, 'w') as f:
+
+        json.dump(alarm_data, f, indent=4)
+
+
+
+# Function to handle setting an alarm
+
+def set_alarm(alarm_time):
+
+    alarm_data = load_alarm()
+
+    alarm_data['alarm_time'] = alarm_time
+
+    alarm_data['status'] = 'set'
+
+    save_alarm(alarm_data)
+
+    return {'status': 'success', 'message': 'Alarm set successfully'}
+
+
+
+# Function to handle snoozing an alarm
+
+def snooze_alarm():
+
+    alarm_data = load_alarm()
+
+    if alarm_data['status'] == 'ringing':
+
+        snooze_time = 5  # Snooze for 5 minutes
+
+        alarm_data['alarm_time'] = (datetime.datetime.now() + datetime.timedelta(minutes=snooze_time)).strftime('%H:%M')
+
+        alarm_data['status'] = 'set'
+
+        save_alarm(alarm_data)
+
+        return {'status': 'success', 'message': 'Alarm snoozed for 5 minutes'}
+
+    return {'status': 'error', 'message': 'No alarm is ringing'}
+
+
+
+# Function to handle stopping an alarm
+
+def stop_alarm():
+
+    alarm_data = load_alarm()
+
+    alarm_data['status'] = 'stopped'
+
+    save_alarm(alarm_data)
+
+    return {'status': 'success', 'message': 'Alarm stopped'}
+
+
+
+# Function to check if the alarm should ring
+
+def check_alarm():
+
+    alarm_data = load_alarm()
+
+    current_time = datetime.datetime.now().strftime('%H:%M')
+
+    if alarm_data['status'] == 'set' and alarm_data['alarm_time'] == current_time:
+
+        alarm_data['status'] = 'ringing'
+
+        save_alarm(alarm_data)
+
+        # Simulate ringing
+
+        for _ in range(5):
+
+            print('\a')  # ASCII Bell
+
+            time.sleep(1)
+
+        return {'status': 'ringing', 'message': 'Wake up!'}
+
+    return {'status': 'idle'}
+
+
+
+# Main CGI script execution starts here
+
+print("Content-type: application/json\n")
+
+
+
+try:
+
+    form = cgi.FieldStorage()
+
+    action = form.getvalue('action')
+
+
+
+    if action == 'set':
+
+        alarm_time = form.getvalue('alarm_time')
+
+        result = set_alarm(alarm_time)
+
+    elif action == 'snooze':
+
+        result = snooze_alarm()
+
+    elif action == 'stop':
+
+        result = stop_alarm()
+
+    else:
+
+        result = {'status': 'error', 'message': 'Invalid action'}
+
+
+
+    print(json.dumps(result))
+
+
+
+    # Check alarm status in the background
+
+    check_alarm()
+
+
+
+except Exception as e:
+
+    print(json.dumps({'status': 'error', 'message': str(e)}))
+
+
+
