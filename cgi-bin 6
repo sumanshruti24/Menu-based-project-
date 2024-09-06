@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+
+
+
+import cgi
+
+import json
+
+from gtts import gTTS
+
+import os
+
+
+
+# Function to convert text to audio using gTTS
+
+def text_to_audio(text, language='en', filename='output.mp3'):
+
+    tts = gTTS(text=text, lang=language, slow=False)
+
+    tts.save(filename)
+
+    return filename
+
+
+
+# Required headers
+
+print("Content-Type: application/json")
+
+print("Access-Control-Allow-Origin: *")
+
+print()
+
+
+
+# Parse the query parameters
+
+form = cgi.FieldStorage()
+
+text = form.getvalue('text', '')
+
+
+
+# Generate audio file from text
+
+audio_filename = '/path/to/cgi-bin/output.mp3'  # Use the actual path where the script can write files
+
+if text:
+
+    text_to_audio(text, language='en', filename=audio_filename)
+
+    audio_url = 'output.mp3'  # This should be the relative URL path accessible by the client
+
+else:
+
+    audio_url = ''
+
+
+
+# Prepare the response data
+
+response_data = {
+
+    'input_text': text,
+
+    'audio_url': audio_url
+
+}
+
+
+
+# Output JSON response
+
+print(json.dumps(response_data))
+
+
+
