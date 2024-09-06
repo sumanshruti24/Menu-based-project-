@@ -1,0 +1,136 @@
+#!/usr/bin/python3
+
+import cgi
+
+import json
+
+import os
+
+import datetime
+
+
+
+# Function to load tasks from storage (for demonstration purposes, using a JSON file)
+
+def load_tasks():
+
+    tasks_file = '/var/www/html/personal_assistant.html'  # Adjust path as necessary
+
+    if os.path.exists(tasks_file):
+
+        with open(tasks_file, 'r') as f:
+
+            tasks = json.load(f)
+
+    else:
+
+        tasks = {'tasks': []}
+
+    return tasks
+
+
+
+# Function to save tasks to storage (JSON file)
+
+def save_tasks(tasks):
+
+    tasks_file = '/var/www/tasks.json'  # Adjust path as necessary
+
+    with open(tasks_file, 'w') as f:
+
+        json.dump(tasks, f, indent=4)
+
+
+
+# Function to handle setting a reminder
+
+def set_reminder(task, datetime_str):
+
+    tasks = load_tasks()
+
+    tasks['tasks'].append({
+
+        'task': task,
+
+        'datetime': datetime_str
+
+    })
+
+    save_tasks(tasks)
+
+
+
+# Function to handle fetching tasks
+
+def fetch_tasks():
+
+    tasks = load_tasks()
+
+    return tasks
+
+
+
+# Main CGI script execution starts here
+
+def main():
+
+    # Set content type to JSON
+
+    print("Content-type: application/json\n")
+
+
+
+    # Parse form data
+
+    form = cgi.FieldStorage()
+
+
+
+    if 'fetch' in form:
+
+        # Fetch tasks request
+
+        tasks = fetch_tasks()
+
+        print(json.dumps(tasks))
+
+    
+
+    elif 'task' in form and 'datetime' in form:
+
+        # Set reminder request
+
+        task = form.getvalue('task')
+
+        datetime_str = form.getvalue('datetime')
+
+
+
+        try:
+
+            datetime.datetime.strptime(datetime_str, "%Y-%m-%dT%H:%M")
+
+            set_reminder(task, datetime_str)
+
+            print(json.dumps({'status': 'success', 'message': 'Reminder set successfully.'}))
+
+        except ValueError:
+
+            print(json.dumps({'status': 'error', 'message': 'Invalid datetime format.'}))
+
+
+
+    else:
+
+        # Invalid request
+
+        print(json.dumps({'status': 'error', 'message': 'Invalid request.'}))
+
+
+
+if __name__ == '__main__':
+
+    main()
+
+
+
