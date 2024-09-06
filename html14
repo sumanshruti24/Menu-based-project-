@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AWS S3 Management</title>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+
+
+        body {
+
+            font-family: 'Roboto', sans-serif;
+
+            background-color: #1a1a2e;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+            margin: 0;
+
+            color: #ffffff;
+
+        }
+
+
+
+        .container {
+
+            background-color: grey;
+
+            padding: 40px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+
+            width: 90%;
+
+            max-width: 600px;
+
+            text-align: center;
+
+        }
+
+
+
+        h1 {
+
+            font-size: 28px;
+
+            margin-bottom: 30px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+
+
+        h1::before {
+
+            content: '☁️';
+
+            margin-right: 10px;
+
+        }
+
+
+
+        .input-group {
+
+            margin-bottom: 20px;
+
+            text-align: left;
+
+        }
+
+
+
+        .input-group label {
+
+            font-weight: bold;
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #e94560;
+
+        }
+
+
+
+        .input-group input {
+
+            width: calc(100% - 20px);
+
+            padding: 10px;
+
+            font-size: 16px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            margin-top: 5px;
+
+            background-color: #484d54;
+
+            color: #ffffff;
+
+        }
+
+
+
+        .buttons {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+        }
+
+
+
+        .buttons button {
+
+            padding: 12px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            transition: transform 0.3s, background-color 0.3s;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+
+
+        .buttons button.create {
+
+            background-color: #4CAF50;
+
+            color: white;
+
+        }
+
+
+
+        .buttons button.create:hover {
+
+            background-color: #45a049;
+
+            transform: scale(1.05);
+
+        }
+
+
+
+        .buttons button.list {
+
+            background-color: #3498db;
+
+            color: white;
+
+        }
+
+
+
+        .buttons button.list:hover {
+
+            background-color: #2980b9;
+
+            transform: scale(1.05);
+
+        }
+
+
+
+        .buttons button.upload {
+
+            background-color: #f39c12;
+
+            color: white;
+
+        }
+
+
+
+        .buttons button.upload:hover {
+
+            background-color: #e67e22;
+
+            transform: scale(1.05);
+
+        }
+
+
+
+        .buttons button.delete {
+
+            background-color: #e94560;
+
+            color: white;
+
+        }
+
+
+
+        .buttons button.delete:hover {
+
+            background-color: #d43d53;
+
+            transform: scale(1.05);
+
+        }
+
+
+
+        .result {
+
+            white-space: pre-wrap;
+
+            background: #484d54;
+
+            padding: 10px;
+
+            border-radius: 5px;
+
+            text-align: left;
+
+            margin-top: 15px;
+
+            border: 1px solid #ddd;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>AWS S3 Management</h1>
+
+        <div class="input-group">
+
+            <label for="bucket_name">Bucket Name:</label>
+
+            <input type="text" id="bucket_name" name="bucket_name" required>
+
+        </div>
+
+        <div class="input-group">
+
+            <label for="file_upload">File to Upload:</label>
+
+            <input type="file" id="file_upload" name="file_upload">
+
+        </div>
+
+        <div class="buttons">
+
+            <button class="create" onclick="manageS3('create')">Create Bucket</button>
+
+            <button class="list" onclick="manageS3('list')">List Buckets</button>
+
+            <button class="upload" onclick="manageS3('upload')">Upload File</button>
+
+            <button class="delete" onclick="manageS3('delete')">Delete Bucket</button>
+
+        </div>
+
+        <div id="result" class="result"></div>
+
+    </div>
+
+
+
+    <script>
+
+        function manageS3(action) {
+
+            const bucketName = document.getElementById('bucket_name').value;
+
+            const fileInput = document.getElementById('file_upload');
+
+            const resultDiv = document.getElementById('result');
+
+
+
+            const formData = new FormData();
+
+            formData.append('action', action);
+
+            formData.append('bucket_name', bucketName);
+
+
+
+            if (action === 'upload' && fileInput.files.length > 0) {
+
+                formData.append('file', fileInput.files[0]);
+
+            }
+
+
+
+            fetch('/cgi-bin/manage_s3.py', {
+
+                method: 'POST',
+
+                body: formData
+
+            })
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                if (data.error) {
+
+                    resultDiv.textContent = `Error: ${data.error}`;
+
+                } else {
+
+                    resultDiv.textContent = `Success: ${data.message}`;
+
+                }
+
+            })
+
+            .catch(error => {
+
+                console.error('Error:', error);
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+
